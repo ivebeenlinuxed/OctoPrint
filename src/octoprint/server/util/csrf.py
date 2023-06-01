@@ -7,7 +7,7 @@ import flask
 
 from octoprint.server.util.flask import OctoPrintFlaskResponse
 
-exempt_views = set()
+exempt_views = {"api.login"}
 
 
 def _get_view_location(view):

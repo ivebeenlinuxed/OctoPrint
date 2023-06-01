@@ -648,12 +648,6 @@ class Server:
             ["enabled", "disabled"], lambda name, plugin: slicingManager.reload_slicers()
         )
 
-        # setup jinja2
-        self._setup_jinja2()
-
-        # setup assets
-        self._setup_assets()
-
         # configure timelapse
         octoprint.timelapse.valid_timelapse("test")
         octoprint.timelapse.configure_timelapse()
@@ -1455,7 +1449,7 @@ class Server:
         timer = octoprint.util.RepeatedTimer(interval, log_heartbeat)
         timer.start()
 
-    def _setup_app(self, app):
+    def _setup_app(self, app: Flask):
         global limiter
 
         from octoprint.server.util.flask import (
@@ -1466,6 +1460,10 @@ class Server:
             PrefixAwareJinjaEnvironment,
             ReverseProxiedEnvironment,
         )
+
+        app.debug = True
+        app.static_folder = os.path.abspath("src/octoangular/dist/octoangular")
+        app.static_url_path = "/app"
 
         # we must set this here because setting app.debug will access app.jinja_env
         app.jinja_environment = PrefixAwareJinjaEnvironment
@@ -1992,21 +1990,21 @@ class Server:
         blueprints = []
         registrators = []
 
-        asset_plugins = octoprint.plugin.plugin_manager().get_implementations(
-            octoprint.plugin.AssetPlugin
-        )
-        for plugin in asset_plugins:
-            if isinstance(plugin, octoprint.plugin.BlueprintPlugin):
-                continue
-            blueprint, prefix = self._prepare_asset_plugin(plugin)
-
-            blueprints.append(blueprint)
-            registrators.append(
-                functools.partial(
-                    register_asset_blueprint, plugin._identifier, blueprint, prefix
-                )
-            )
-
+        #        asset_plugins = octoprint.plugin.plugin_manager().get_implementations(
+        #            octoprint.plugin.AssetPlugin
+        #        )
+        #        for plugin in asset_plugins:
+        #            if isinstance(plugin, octoprint.plugin.BlueprintPlugin):
+        #                continue
+        #            blueprint, prefix = self._prepare_asset_plugin(plugin)
+        #
+        #            blueprints.append(blueprint)
+        #            registrators.append(
+        ##                functools.partial(
+        #                    register_asset_blueprint, plugin._identifier, blueprint, prefix
+        #                )
+        #            )
+        #
         return blueprints, registrators
 
     def _prepare_blueprint_plugin(self, plugin):
@@ -2100,8 +2098,8 @@ class Server:
 
         from octoprint.server.util.webassets import MemoryManifest  # noqa: F401
 
-        util.flask.fix_webassets_convert_item_to_flask_url()
-        util.flask.fix_webassets_filtertool()
+        # util.flask.fix_webassets_convert_item_to_flask_url()
+        # util.flask.fix_webassets_filtertool()
 
         base_folder = self._settings.getBaseFolder("generated")
 

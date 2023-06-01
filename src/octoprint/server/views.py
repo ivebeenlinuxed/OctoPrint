@@ -9,10 +9,12 @@ import os
 import re
 from collections import defaultdict
 
+import requests
 from flask import (
     Response,
     abort,
     g,
+    jsonify,
     make_response,
     redirect,
     render_template,
@@ -357,6 +359,41 @@ def in_cache():
         return abort(404)
 
 
+@app.route("/")
+def home():
+    return app.send_static_file("index.html")
+
+
+@app.route("/app/<path:path>")
+def assets(path):
+    return app.send_static_file(path)
+
+
+@app.route("/api/first_run")
+def first_run():
+    first_run = settings().getBoolean(["server", "firstRun"])
+    return jsonify({"FirstRun": first_run})
+
+
+def debug_proxy(path):
+    res = requests.request(method="GET", url="http://127.0.0.1:4200/" + path)
+    excluded_headers = [
+        "content-encoding",
+        "content-length",
+        "transfer-encoding",
+        "connection",
+    ]  # NOTE we here exclude all "hop-by-hop headers" defined by RFC 2616 section 13.5.1 ref. https://www.rfc-editor.org/rfc/rfc2616#section-13.5.1
+    headers = [
+        (k, v) for k, v in res.raw.headers.items() if k.lower() not in excluded_headers
+    ]
+    return Response(res.content, res.status_code, headers)
+
+
+@app.route("/api/heartbeat")
+def heartbeat():
+    return jsonify({"status": "healthy"})
+
+
 @app.route("/reverse_proxy_test")
 @app.route("/reverse_proxy_test/")
 def reverse_proxy_test():
@@ -377,7 +414,7 @@ def reverse_proxy_test():
     )
 
 
-@app.route("/")
+@app.route("/non_existant")
 def index():
     from octoprint.server import connectivityChecker, printer
 
@@ -655,7 +692,7 @@ def index():
 
         # no plugin took an interest, we'll use the default UI
         def make_default_ui():
-            r = make_response(render_template("index.jinja2", **render_kwargs))
+            r = make_response(render_template("index.html", **render_kwargs))
             if wizard:
                 # if we have active wizard dialogs, set non caching headers
                 r = util.flask.add_non_caching_response_headers(r)

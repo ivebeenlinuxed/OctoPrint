@@ -34,6 +34,7 @@ from octoprint.server.util import (
     loginFromAuthorizationHeaderRequestHandler,
     noCachingExceptGetResponseHandler,
 )
+from octoprint.server.util.csrf import add_csrf_cookie
 from octoprint.server.util.flask import (
     get_json_command_from_request,
     get_remote_address,
@@ -354,7 +355,7 @@ def login():
                 )
                 auth_log(f"Logging in user {username} from {remote_addr} via credentials")
 
-                return r
+                return add_csrf_cookie(r)
 
             else:
                 auth_log(
