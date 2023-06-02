@@ -10,5 +10,9 @@
   "/setup": {
     "target": "http://localhost:5000",
     "secure": false
+  },
+  "/angular_module": {
+    "target": "http://localhost:5000",
+    "secure": false
   }
 }

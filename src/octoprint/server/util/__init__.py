@@ -331,6 +331,14 @@ def get_authorization_header(request):
     # Tornado and Flask headers
     return request.headers.get("Authorization")
 
+def get_angular_modules():
+    from octoprint.plugin import plugin_manager
+
+    output = {}
+    for plugin in plugin_manager().get_implementations(octoprint.plugin.AngularPlugin):
+        output[plugin._identifier] = plugin.get_angular_entrypoint()
+    
+    return output
 
 def get_plugin_hash():
     from octoprint.plugin import plugin_manager

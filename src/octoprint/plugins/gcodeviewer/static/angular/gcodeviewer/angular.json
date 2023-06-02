@@ -3,11 +3,11 @@
 	"version": 1,
 	"newProjectRoot": "projects",
 	"projects": {
-		"octoangular": {
+		"gcodeviewer": {
 			"projectType": "application",
 			"schematics": {
 				"@schematics/angular:component": {
-					"style": "scss"
+					"style": "less"
 				}
 			},
 			"root": "",
@@ -17,32 +17,27 @@
 				"build": {
 					"builder": "ngx-build-plus:browser",
 					"options": {
-						"outputPath": "dist/octoangular",
+						"outputPath": "dist/gcodeviewer",
 						"index": "src/index.html",
 						"main": "src/main.ts",
 						"polyfills": [
 							"zone.js"
 						],
 						"tsConfig": "tsconfig.app.json",
-						"inlineStyleLanguage": "scss",
+						"inlineStyleLanguage": "less",
 						"assets": [
 							"src/favicon.ico",
 							"src/assets"
 						],
 						"styles": [
-							"src/styles.scss",
-							"node_modules/bootstrap/scss/bootstrap.scss",
-							"node_modules/bootstrap-icons/font/bootstrap-icons.css"
+							"src/styles.less"
 						],
-						"scripts": [
-							"node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
-						],
+						"scripts": [],
 						"extraWebpackConfig": "webpack.config.js",
 						"commonChunk": false
 					},
 					"configurations": {
 						"production": {
-							"baseHref": "/app/",
 							"budgets": [
 								{
 									"type": "initial",
@@ -73,25 +68,24 @@
 					"builder": "ngx-build-plus:dev-server",
 					"configurations": {
 						"production": {
-							"browserTarget": "octoangular:build:production",
+							"browserTarget": "gcodeviewer:build:production",
 							"extraWebpackConfig": "webpack.prod.config.js"
 						},
 						"development": {
-							"browserTarget": "octoangular:build:development"
+							"browserTarget": "gcodeviewer:build:development"
 						}
 					},
 					"defaultConfiguration": "development",
 					"options": {
-						"proxyConfig": "src/proxy.conf.json",
-						"port": 4200,
-						"publicHost": "http://localhost:4200",
+						"port": 4201,
+						"publicHost": "http://localhost:4201",
 						"extraWebpackConfig": "webpack.config.js"
 					}
 				},
 				"extract-i18n": {
 					"builder": "ngx-build-plus:extract-i18n",
 					"options": {
-						"browserTarget": "octoangular:build",
+						"browserTarget": "gcodeviewer:build",
 						"extraWebpackConfig": "webpack.config.js"
 					}
 				},
@@ -103,13 +97,13 @@
 							"zone.js/testing"
 						],
 						"tsConfig": "tsconfig.spec.json",
-						"inlineStyleLanguage": "scss",
+						"inlineStyleLanguage": "less",
 						"assets": [
 							"src/favicon.ico",
 							"src/assets"
 						],
 						"styles": [
-							"src/styles.scss"
+							"src/styles.less"
 						],
 						"scripts": []
 					}
@@ -118,6 +112,6 @@
 		}
 	},
 	"cli": {
-		"analytics": "c468679f-f383-4604-b588-4adab358d359"
+		"analytics": false
 	}
 }

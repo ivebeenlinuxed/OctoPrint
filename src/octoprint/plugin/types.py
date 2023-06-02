@@ -20,6 +20,7 @@ __license__ = "GNU Affero General Public License http://www.gnu.org/licenses/agp
 __copyright__ = "Copyright (C) 2014 The OctoPrint Project - Released under terms of the AGPLv3 License"
 
 
+import os
 from .core import Plugin, RestartNeedingPlugin, SortablePlugin
 
 
@@ -278,6 +279,10 @@ class AssetPlugin(OctoPrintPlugin, RestartNeedingPlugin):
         """
         return {}
 
+
+class AngularPlugin(AssetPlugin):
+    def get_angular_entrypoint(self):
+        return os.path.join(self.get_asset_folder(),"angular")
 
 class TemplatePlugin(OctoPrintPlugin, ReloadNeedingPlugin):
     """

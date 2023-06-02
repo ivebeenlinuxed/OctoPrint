@@ -1,6 +1,7 @@
 __license__ = "GNU Affero General Public License http://www.gnu.org/licenses/agpl.html"
 __copyright__ = "Copyright (C) 2022 The OctoPrint Project - Released under terms of the AGPLv3 License"
 
+import os
 import threading
 
 import requests
@@ -12,17 +13,19 @@ from octoprint.webcams import WebcamNotAbleToTakeSnapshotException
 
 
 class ClassicWebcamPlugin(
-    octoprint.plugin.AssetPlugin,
     octoprint.plugin.TemplatePlugin,
     octoprint.plugin.SettingsPlugin,
     octoprint.plugin.WebcamProviderPlugin,
-    octoprint.plugin.WizardPlugin,
+    octoprint.plugin.WizardPlugin#,
+    #octoprint.plugin.AngularPlugin
 ):
     def __init__(self):
         self._capture_mutex = threading.Lock()
         self._webcam_name = "classic"
 
     # ~~ TemplatePlugin API
+    def get_angular_entrypoint(self):
+        return "/angular_module/classicwebcam/classicwebcam/dist/classicwebcam/remoteEntry.js"
 
     def get_assets(self):
         return {

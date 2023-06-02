@@ -3,7 +3,7 @@
 	"version": 1,
 	"newProjectRoot": "projects",
 	"projects": {
-		"octoangular": {
+		"classicwebcam": {
 			"projectType": "application",
 			"schematics": {
 				"@schematics/angular:component": {
@@ -17,7 +17,7 @@
 				"build": {
 					"builder": "ngx-build-plus:browser",
 					"options": {
-						"outputPath": "dist/octoangular",
+						"outputPath": "dist/classicwebcam",
 						"index": "src/index.html",
 						"main": "src/main.ts",
 						"polyfills": [
@@ -30,19 +30,14 @@
 							"src/assets"
 						],
 						"styles": [
-							"src/styles.scss",
-							"node_modules/bootstrap/scss/bootstrap.scss",
-							"node_modules/bootstrap-icons/font/bootstrap-icons.css"
+							"src/styles.scss"
 						],
-						"scripts": [
-							"node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
-						],
+						"scripts": [],
 						"extraWebpackConfig": "webpack.config.js",
 						"commonChunk": false
 					},
 					"configurations": {
 						"production": {
-							"baseHref": "/app/",
 							"budgets": [
 								{
 									"type": "initial",
@@ -73,25 +68,24 @@
 					"builder": "ngx-build-plus:dev-server",
 					"configurations": {
 						"production": {
-							"browserTarget": "octoangular:build:production",
+							"browserTarget": "classicwebcam:build:production",
 							"extraWebpackConfig": "webpack.prod.config.js"
 						},
 						"development": {
-							"browserTarget": "octoangular:build:development"
+							"browserTarget": "classicwebcam:build:development"
 						}
 					},
 					"defaultConfiguration": "development",
 					"options": {
-						"proxyConfig": "src/proxy.conf.json",
-						"port": 4200,
-						"publicHost": "http://localhost:4200",
+						"port": 4201,
+						"publicHost": "http://localhost:4201",
 						"extraWebpackConfig": "webpack.config.js"
 					}
 				},
 				"extract-i18n": {
 					"builder": "ngx-build-plus:extract-i18n",
 					"options": {
-						"browserTarget": "octoangular:build",
+						"browserTarget": "classicwebcam:build",
 						"extraWebpackConfig": "webpack.config.js"
 					}
 				},
@@ -118,6 +112,6 @@
 		}
 	},
 	"cli": {
-		"analytics": "c468679f-f383-4604-b588-4adab358d359"
+		"analytics": "915dd2d6-be89-4478-8e85-6bf61ce573ac"
 	}
 }

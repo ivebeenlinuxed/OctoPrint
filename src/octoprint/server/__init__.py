@@ -1990,21 +1990,21 @@ class Server:
         blueprints = []
         registrators = []
 
-        #        asset_plugins = octoprint.plugin.plugin_manager().get_implementations(
-        #            octoprint.plugin.AssetPlugin
-        #        )
-        #        for plugin in asset_plugins:
-        #            if isinstance(plugin, octoprint.plugin.BlueprintPlugin):
-        #                continue
-        #            blueprint, prefix = self._prepare_asset_plugin(plugin)
-        #
-        #            blueprints.append(blueprint)
-        #            registrators.append(
-        ##                functools.partial(
-        #                    register_asset_blueprint, plugin._identifier, blueprint, prefix
-        #                )
-        #            )
-        #
+        asset_plugins = octoprint.plugin.plugin_manager().get_implementations(
+            octoprint.plugin.AssetPlugin
+        )
+        for plugin in asset_plugins:
+            if isinstance(plugin, octoprint.plugin.BlueprintPlugin):
+                continue
+            blueprint, prefix = self._prepare_asset_plugin(plugin)
+
+            blueprints.append(blueprint)
+            registrators.append(
+                functools.partial(
+                    register_asset_blueprint, plugin._identifier, blueprint, prefix
+                )
+            )
+
         return blueprints, registrators
 
     def _prepare_blueprint_plugin(self, plugin):

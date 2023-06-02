@@ -11,11 +11,17 @@ from octoprint.util.files import search_through_file
 
 
 class GcodeviewerPlugin(
-    octoprint.plugin.AssetPlugin,
+    octoprint.plugin.AngularPlugin,
     octoprint.plugin.TemplatePlugin,
     octoprint.plugin.SettingsPlugin,
     octoprint.plugin.BlueprintPlugin,
+
 ):
+    
+    # ~~ TemplatePlugin API
+    def get_angular_entrypoint(self):
+        return "/angular_module/gcodeviewer/gcodeviewer/dist/gcodeviewer/remoteEntry.js"
+
     def get_assets(self):
         js = [
             "js/gcodeviewer.js",

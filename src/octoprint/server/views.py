@@ -42,6 +42,7 @@ from octoprint.server import (  # noqa: F401
     userManager,
 )
 from octoprint.server.util import (
+    get_angular_modules,
     has_permissions,
     require_login_with,
     validate_local_redirect,
@@ -374,6 +375,31 @@ def first_run():
     first_run = settings().getBoolean(["server", "firstRun"])
     return jsonify({"FirstRun": first_run})
 
+
+@app.route("/api/angular_entrypoints")
+def entrypoints():
+    return jsonify(get_angular_modules())
+
+@app.errorhandler(500)
+def internal_error(error):
+    return jsonify({"error": str(error)}), 500
+
+@app.route("/angular_module/<string:name>/<path:path>")
+def plugin_module(name, path):
+    #ensure path does not navigate outside of plugin folder
+    path = path.replace("..", "")
+    api_plugins = octoprint.plugin.plugin_manager().get_filtered_implementations(
+        lambda p: p._identifier == name, octoprint.plugin.AngularPlugin
+    )
+    if not api_plugins:
+        abort(404)
+
+    if len(api_plugins) > 1:
+        abort(500, description="More than one api provider registered, can't proceed")
+
+
+
+    return send_from_directory(os.path.join(api_plugins[0].get_asset_folder(), "angular"), path)
 
 def debug_proxy(path):
     res = requests.request(method="GET", url="http://127.0.0.1:4200/" + path)
