@@ -16,7 +16,8 @@
             timeouts: [0, 1, 1, 2, 3, 5, 8, 13, 20, 40, 100],
             connectTimeout: 5000,
             transportTimeout: 4000,
-            rateSlidingWindowSize: 20
+            rateSlidingWindowSize: 20,
+            invisiblePageTimeout: 10000
         };
 
         this.socket = undefined;
@@ -29,6 +30,7 @@
         this.rateLastMeasurements = [];
 
         this.connectTimeout = undefined;
+        this.invisiblePageTimeout = undefined;
 
         this.onMessage("connected", function () {
             // Make sure to clear connection timeout on connect
@@ -37,6 +39,30 @@
                 self.connectTimeout = undefined;
             }
         });
+
+        document.addEventListener("visibilitychange", (ev) => {
+            this.onBrowserTabVisibilityChange(!document.hidden);
+        })
+    };
+
+    //Note: This is not a ViewModel, so is not triggered by the main UI updaters
+    OctoPrintSocketClient.prototype.onBrowserTabVisibilityChange = function (isVisible) {
+        if (isVisible) {
+            if (this.invisiblePageTimeout) {
+                log.debug("Page Visible: Cancelled disconnect");
+                clearTimeout(this.invisiblePageTimeout);
+                this.invisiblePageTimeout = undefined;
+            }
+            log.debug("Page Visible: Reconnecting websocket");
+            this.connect();
+        } else {
+            clearTimeout(this.invisiblePageTimeout);
+            this.invisiblePageTimeout = setTimeout(() => {
+                log.debug("Page Invisible: Websocket disconnected due invisible timeout");
+                this.disconnect();
+                this.invisiblePageTimeout = undefined;
+            }, this.options.invisiblePageTimeout);
+        }
     };
 
     OctoPrintSocketClient.prototype.propagateMessage = function (event, data) {
