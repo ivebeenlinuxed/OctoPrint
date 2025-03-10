@@ -1,0 +1,74 @@
+api:
+  key: ymedyGlvktyVUjcPLVlZlOS1X5BndAB75zzpxqzmjDg
+plugins:
+  announcements:
+    _config_version: 1
+  classicwebcam:
+    _config_version: 1
+  discovery:
+    upnpUuid: 75387386-8f26-42ed-8190-6be98307d906
+  errortracking:
+    unique_id: c2e488cb-4199-4ef4-afdd-eca67dec0238
+  gcodeviewer:
+    _config_version: 1
+  softwareupdate:
+    _config_version: 9
+  tracking:
+    unique_id: 1eed2810-d3bc-42b5-a173-a216e14fe505
+  virtual_printer:
+    _config_version: 1
+    enabled: true
+server:
+  firstRun: false
+  secretKey: df3b3d5f04ce0c394dc222d269c3a549921781247fbf4f5fc531a2d77921c895
+  seenWizards:
+    backup: null
+    classicwebcam: 1
+    corewizard: 4
+    tracking: null
+temperature:
+  profiles:
+  - bed: 100
+    chamber: null
+    extruder: 210
+    name: ABS
+  - bed: 60
+    chamber: null
+    extruder: 180
+    name: PLA
+# Settings only relevant for development
+devel:
+  # Settings for OctoPrint's internal caching
+  cache:
+    # Whether to enable caching. Defaults to true. Setting it to false will cause the UI to always
+    # be fully rerendered on request to / on the server.
+    enabled: false
+
+    # Whether to enable the preemptive cache
+    preemptive: false
+
+  # Settings for stylesheet preference. OctoPrint will prefer to use the stylesheet type
+  # specified here. Usually (on a production install) that will be the compiled css (default).
+  # Developers may specify less here too.
+  stylesheet: css
+
+  # Settings for OctoPrint's web asset merging and minifying
+  webassets:
+    # If set to true, OctoPrint will merge all JS, all CSS and all Less files into one file per type
+    # to reduce request count. Setting it to false will load all assets individually. Note: if this is set to
+    # false, no minification will take place regardless of the minify setting below.
+    bundle: false
+
+    # If set to true, OctoPrint will the core and library javascript assets. Note: if bundle is
+    # set to false, no minification will take place either.
+    minify: true
+
+    # If set to true, OctoPrint will also minify the third party plugin javascript assets. Note: if bundle or
+    # minify are set to false, no minification of the plugin assets will take place either.
+    minify_plugins: false
+
+    # Whether to delete generated web assets on server startup (forcing a regeneration)
+    clean_on_startup: true
+
+  # enable or disable the loading animation
+  showLoadingAnimation: true
